@@ -163,7 +163,7 @@ pip-log.txt
 .DS_Store
 
 # Java 
-.class
+*.class
 # Zip
-.zip
+*.zip
 
