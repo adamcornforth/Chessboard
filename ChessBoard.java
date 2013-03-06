@@ -38,43 +38,48 @@ public class ChessBoard implements ActionListener {
 		boardFrame.setVisible(true);  
 	}
 
+	/*
+		Whenever a button is pressed:
+		- Handles the clearing of orange squares if a new piece is selected
+		- Discards selected pieces & orange squares if an unavailable square is clicked on 
+		- If a piece is clicked on, works out what moves are valid for that piece
+		- Moves a piece if a piece is selected and the button pressed is legal and isn't a piece
+	*/
 	public void actionPerformed(ActionEvent e)
 	{	
 		ChessSquare button = (ChessSquare)e.getSource(); 
 
-		// save selected piece to instance variable 
+		// clear all squares if there's a piece previously selected
 		if(this.selectedPiece != null) {
-			// clear all squares if not piece clicked
 			for(int i =0;i < 128;i++) {
 				if(!hex88(i) && !chessSquare[i].isPiece())
 					chessSquare[i].setIcon(new ImageIcon("EmptySquare.jpg"));
 			}
-			this.selectedPiece = (button.isPiece()) ? null : this.selectedPiece; 
-		} 
-		if(button.isPiece()) {
-			this.selectedPiece = button; 
-			System.out.println("Piece " + button.getPieceName() + " selected for moving... (has moved "
-								+ button.getMoves() + " times)");
-			for(int i =0;i < 128;i++) {
-				if(!hex88(i) && this.selectedPiece.canMoveTo(chessSquare[i])) {
-					chessSquare[i].setIcon(new ImageIcon("SelectedSquare.jpg"));
-					System.out.println("Piece index " +selectedPiece.getIndex()+ 
-						" can move to destination index " + i + "!"); 
-				}
-			}
-		}
 
-		// move selected piece if button pressed hasn't got a piece on it
-		if(!button.isPiece() && selectedPiece != null && this.selectedPiece.canMoveTo(button)) {
-			System.out.println("Piece " + this.selectedPiece.getPieceName() + " moved to new square!");
+			// can't move to new selection or it's a new piece? discard the previous selection
+			if(!this.selectedPiece.canMoveTo(button) || button.isPiece())
+				this.selectedPiece = null; 
+		} 
+
+		// if user clicks on a piece, we need to work out what moves are valid for that piece
+		if(button.isPiece()) {
+			this.selectedPiece = button; // remember this selection for later
+			for(int i =0;i < 128;i++) {
+				if(!hex88(i) && this.selectedPiece.canMoveTo(chessSquare[i])) 
+					chessSquare[i].setIcon(new ImageIcon("SelectedSquare.jpg"));
+			}
+		} 
+
+		// move selected piece (if it exists) if button pressed hasn't got a piece on it, and button can be moved to 
+		if(!button.isPiece() && this.selectedPiece != null && this.selectedPiece.canMoveTo(button)) {
 			this.selectedPiece.moveTo(button); 
 			this.selectedPiece = null; 
 		} 
 	}
 
 	/* 
-		Takes the index of a square in the array and
-		returns if it is on the 'legal' board or not
+		Takes an index and returns if it 
+		is on the 'legal' board or not 
 	*/
 	public boolean hex88(int index) {
 
@@ -86,14 +91,22 @@ public class ChessBoard implements ActionListener {
 		return (test != 0) ? true : false; 
 	}
 
+	/*
+		Creates a linear array for the chessboard
+		- 128 elements (as per the 0x88 implementation of a chessboard)
+		- iterates through every rank and file, converting each into an 'index' integer to be stored
+		- only store a chessSquare object if the index integer passes the 0x88 test
+		- switch statement used to determine if a certain rank/file holds a piece
+		- increments the rank when the end of a file reached
+	*/
 	private void initHexChessSquares(int w, int h) {
 		String piece = ""; 
 		int file = 0; 
 		int index = 0; 
 		int test = 0; 
 
-		// iterate through each row
-		for (int rank=0;rank < 8; file++) {
+		// iterate through each file
+		for (int rank=0; rank < 8; file++) {
 			index = rank * 16 + file;
 			// only need to add square class to array if rank/file passes 0x88 test
 			if(!hex88(index)) {				 
