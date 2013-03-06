@@ -24,7 +24,7 @@ public class ChessSquare extends JButton {
 		ImageIcon i = new ImageIcon(this.filename); 
 		this.setIcon(i);  
 
-		// initialise button
+		// initialise button 
 		this.setPreferredSize(new Dimension(w, h));
 		this.setLocation(x, y); 
 		this.setSize(w, h); 
@@ -37,6 +37,9 @@ public class ChessSquare extends JButton {
 		this.index = index; 
 	}
 
+	/* 
+		Switch the instance variables between this square and the destination square, to simulate movement 
+	*/ 
 	public void moveTo(ChessSquare destinationSquare) {
 		ImageIcon i = new ImageIcon(destinationSquare.getFilename());  
 		ImageIcon iNew = new ImageIcon(this.getFilename()); 
@@ -54,6 +57,17 @@ public class ChessSquare extends JButton {
 		this.setPiece("NONE"); 
 	}
 
+	/* 
+		Check if this square can moved to the passed destination square 
+			First check the piece of this square. The logic is different for each piece. 
+			- Pawn is done manually and simply deducting -16 from this square's index reveals the index of the only possible destination. -32 for two squares ahead (only on pawn's 1st move). 
+			- Sliding pieces can be done using by checking if a) the index difference is in the same rank and b) the index difference % 16 == 0
+			- Diagonal pieces work on the same principle as sliding b. Simply do modulo 15, -15, 17, -17, etc. 
+			- King & Knight done painstakingly and manually. 
+
+			If any of the conditions are met in the associated case in the switch statement, 
+			return the *opposite* of the true/false value of whether the destination square is a piece. 
+	*/
 	public boolean canMoveTo(ChessSquare destinationSquare) {
 		int index = destinationSquare.index; 
 		int indexDiff = destinationSquare.getIndex() - this.index; 
@@ -106,14 +120,11 @@ public class ChessSquare extends JButton {
 			default: 
 		}
 		return false; 
-
 	}
 
-	public void setPiece(String p) {
-		this.filename = decideFilename(p); 
-		this.piece = (filename == "EmptySquare.jpg") ? "NONE" : p; 
-	}
-
+	/*
+		Simple switch statement put into a fuction as it's called multiple times 
+	*/ 
 	private String decideFilename(String p) {
 		switch(p) {
 			case "PAWN":
@@ -131,6 +142,15 @@ public class ChessSquare extends JButton {
 			default:
 				return "EmptySquare.jpg"; 
 		} 
+	}
+
+	/* 
+		Some getters & setters 
+	*/ 
+
+	public void setPiece(String p) {
+		this.filename = decideFilename(p); 
+		this.piece = (filename == "EmptySquare.jpg") ? "NONE" : p; 
 	}
 
 	public void setMoves(int m) {
