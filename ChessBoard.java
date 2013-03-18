@@ -14,7 +14,7 @@ public class ChessBoard implements ActionListener {
  
 	private JFrame boardFrame; 
 	private JPanel content; 
-	private ChessSquare selectedPiece = null; 
+	private ChessSquare selectedPiece = null;  
 
 	public ChessBoard(String title, int w, int h) { 
 		frameWidth = w; 
@@ -47,6 +47,7 @@ public class ChessBoard implements ActionListener {
 	*/
 	public void actionPerformed(ActionEvent e)
 	{	
+		System.out.println("Clicked!"); 
 		ChessSquare button = (ChessSquare)e.getSource(); 
 
 		// clear all squares if there's a piece previously selected
@@ -57,21 +58,24 @@ public class ChessBoard implements ActionListener {
 			}
 
 			// can't move to new selection or it's a new piece? discard the previous selection
-			if(!this.selectedPiece.canMoveTo(button) || button.isPiece())
+			if(!this.selectedPiece.getChessPiece().canMoveTo(button) || button.isPiece())
 				this.selectedPiece = null; 
 		} 
 
 		// if user clicks on a piece, we need to work out what moves are valid for that piece
 		if(button.isPiece()) {
+			System.out.println("Button is a piece! with the index of " + button.getChessPiece().getIndex()); 
 			this.selectedPiece = button; // remember this selection for later
 			for(int i =0;i < 128;i++) {
-				if(!hex88(i) && this.selectedPiece.canMoveTo(chessSquare[i])) 
+				if(!hex88(i) && this.selectedPiece.getChessPiece().canMoveTo(chessSquare[i])) {
 					chessSquare[i].setIcon(new ImageIcon("SelectedSquare.jpg"));
+					System.out.println("Found square..." + i); 
+				}
 			}
 		} 
 
 		// move selected piece (if it exists) if button pressed hasn't got a piece on it, and button can be moved to 
-		if(!button.isPiece() && this.selectedPiece != null && this.selectedPiece.canMoveTo(button)) {
+		if(!button.isPiece() && this.selectedPiece != null && this.selectedPiece.getChessPiece().canMoveTo(button)) {
 			this.selectedPiece.moveTo(button); 
 			this.selectedPiece = null; 
 		} 
@@ -99,7 +103,7 @@ public class ChessBoard implements ActionListener {
 		- increments the rank when the end of a file reached
 	*/ 
 	private void initHexChessSquares(int w, int h) {
-		String piece = ""; 
+		ChessPiece piece; 
 		int file = 0; 
 		int index = 0; 
 		int test = 0; 
@@ -110,30 +114,30 @@ public class ChessBoard implements ActionListener {
 			// only need to add square class to array if rank/file passes 0x88 test
 			if(!hex88(index)) {				 
 				// set piece string if applicable on current rank/file
-				piece = (rank == 6) ? "PAWN" : ""; 
+				piece = (rank == 6) ? new Pawn(index) : new BlankSquare(index); 
 				if(rank == 7) {
 					switch(file) {
 						case 1:
 						case 6:
-							piece = "KNIGHT";
+							piece = new Knight(index);
 							break; 
 						case 2:
 						case 5: 
-							piece = "BISHOP";
+							piece = new Bishop(index);
 							break;
 						case 3:
-							piece = "QUEEN"; 
+							piece = new Queen(index); 
 							break;
 						case 4: 
-							piece = "KING"; 
+							piece = new King(index); 
 							break;
 						default: 
-							piece = "ROOK"; 
+							piece = new Rook(index); 
 					}
 				}
 
-				chessSquare[index] = new ChessSquare(w * file, h * rank, w, h, piece, index); 
-				content.add(chessSquare[index]);
+				chessSquare[index] = new ChessSquare(w * file, h * rank, w, h, piece); 
+				content.add(chessSquare[index]); 
 	 			chessSquare[index].addActionListener(this); 
 			} else {
 				chessSquare[index] = null; 
