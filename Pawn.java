@@ -1,7 +1,7 @@
 public class Pawn extends ChessPiece{
 	public Pawn (int i) {
 		super (i); 
-		this.setFilename("Pawn.jpg");
+		this.setFilename("Images/Pawn.jpg");
 		this.setIsPiece(true); 
 	}
 

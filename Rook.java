@@ -1,7 +1,7 @@
 public class Rook extends ChessPiece{
 	public Rook (int i) {
 		super (i); 
-		this.setFilename("Rook.jpg");
+		this.setFilename("Images/Rook.jpg");
 		this.setIsPiece(true); 
 	}
 	

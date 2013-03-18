@@ -1,7 +1,7 @@
 public class King extends ChessPiece{
 	public King (int i) {
 		super (i); 
-		this.setFilename("King.jpg");
+		this.setFilename("Images/King.jpg");
 		this.setIsPiece(true); 
 	}
 

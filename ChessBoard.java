@@ -47,14 +47,13 @@ public class ChessBoard implements ActionListener {
 	*/
 	public void actionPerformed(ActionEvent e)
 	{	
-		System.out.println("Clicked!"); 
 		ChessSquare button = (ChessSquare)e.getSource(); 
 
 		// clear all squares if there's a piece previously selected
 		if(this.selectedPiece != null) {
 			for(int i =0;i < 128;i++) {
 				if(!hex88(i) && !chessSquare[i].isPiece())
-					chessSquare[i].setIcon(new ImageIcon("EmptySquare.jpg"));
+					chessSquare[i].setIcon(new ImageIcon("Images/EmptySquare.jpg"));
 			}
 
 			// can't move to new selection or it's a new piece? discard the previous selection
@@ -64,12 +63,10 @@ public class ChessBoard implements ActionListener {
 
 		// if user clicks on a piece, we need to work out what moves are valid for that piece
 		if(button.isPiece()) {
-			System.out.println("Button is a piece! with the index of " + button.getChessPiece().getIndex()); 
 			this.selectedPiece = button; // remember this selection for later
 			for(int i =0;i < 128;i++) {
 				if(!hex88(i) && this.selectedPiece.getChessPiece().canMoveTo(chessSquare[i])) {
-					chessSquare[i].setIcon(new ImageIcon("SelectedSquare.jpg"));
-					System.out.println("Found square..." + i); 
+					chessSquare[i].setIcon(new ImageIcon("Images/SelectedSquare.jpg"));
 				}
 			}
 		} 
