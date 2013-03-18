@@ -11,6 +11,8 @@ public abstract class ChessPiece {
 	private int index;  
 	private String filename = ""; 
 	private boolean isPiece = false; 
+	private Validation validator; 
+	private int lastVisited; 
 
 	public ChessPiece(int i) {
 		this.index = i; 
@@ -27,8 +29,14 @@ public abstract class ChessPiece {
 			If any of the conditions are met in the associated case in the switch statement, 
 			return the *opposite* of the true/false value of whether the destination square is a piece. 
 	*/
-	public abstract boolean canMoveTo(ChessSquare destinationSquare);  
+	public abstract boolean canMoveTo(ChessSquare destinationSquare, ChessSquare[] chessSquare);
 
+	/* 
+		Determines if the path is diagonal, and in what direction from two given indexes. 
+		Then scans the path looking for pieces. If a piece is found, return false, else true.
+	*/  
+
+	public abstract boolean scanPath(int start, int end, ChessSquare[] chessSquare);
 
 	/*  Getters  */ 
 
@@ -46,6 +54,10 @@ public abstract class ChessPiece {
 
 	public String getFilename() {
 		return this.filename; 
+	}
+
+	public Integer getLastVisited() {
+		return this.lastVisited; 
 	}
 
 	/*  Setters	 */ 
@@ -68,6 +80,10 @@ public abstract class ChessPiece {
 
 	public void incrementMoves() {
 		this.moves++; 
+	}
+
+	public void setLastVisited(int lv) {
+		this.lastVisited = lv; 
 	}
 
 }

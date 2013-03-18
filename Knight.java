@@ -5,7 +5,7 @@ public class Knight extends ChessPiece{
 		this.setIsPiece(true); 
 	}
 	
-	public boolean canMoveTo(ChessSquare destinationSquare) {
+	public boolean canMoveTo(ChessSquare destinationSquare, ChessSquare[] chessSquare) {
 		int index = destinationSquare.getChessPiece().getIndex(); 
 		if( ((index == this.getIndex() - 31)) // if square is above and to the left 
 			 || ((index == this.getIndex() - 33)) // above and to the right
@@ -19,4 +19,9 @@ public class Knight extends ChessPiece{
 				return !destinationSquare.isPiece(); 
 			return false;  
 	}
+
+	public boolean scanPath(int start, int end, ChessSquare[] chessSquare) {
+		return false;  
+	}
+
 } 

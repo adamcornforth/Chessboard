@@ -5,14 +5,20 @@ public class King extends ChessPiece{
 		this.setIsPiece(true); 
 	}
 
-	public boolean canMoveTo(ChessSquare destinationSquare) {
+	public boolean canMoveTo(ChessSquare destinationSquare, ChessSquare[] chessSquare) {
 		int index = destinationSquare.getChessPiece().getIndex(); 
 		if( ((index == this.getIndex() - 16) || (index == this.getIndex() + 16)) // directly above and below
 			 || ((index == this.getIndex() - 15) || (index == this.getIndex() + 15)) // upper left and below left 
 			 || ((index == this.getIndex() - 17) || (index == this.getIndex() + 17)) // upper right and below right
 			 || ((index == this.getIndex() - 1) || (index == this.getIndex() + 1)) // if square is directly to the side 
 			  )
-				return !destinationSquare.isPiece(); 
+				return !destinationSquare.isPiece();
 			return false; 
 	}
+
+	// don't need to check paths as there are none!
+	public boolean scanPath(int start, int end, ChessSquare[] chessSquare) {
+		return true;  
+	}
+
 } 
