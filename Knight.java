@@ -20,8 +20,9 @@ public class Knight extends ChessPiece{
 			return false;  
 	}
 
+	// don't need to check paths as this guy can jump!
 	public boolean scanPath(int start, int end, ChessSquare[] chessSquare) {
-		return false;  
+		return true;  
 	}
 
 } 

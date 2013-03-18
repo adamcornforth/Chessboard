@@ -9,8 +9,6 @@ public class Bishop extends ChessPiece{
 		int indexDiff = destinationSquare.getChessPiece().getIndex() - this.getIndex(); 
 		if( (((indexDiff % 15 == 0) || (indexDiff % 17 == 0))) // if square is left up/down or right up/down
 			 ) {
-				// so the square is valid, need to scan back down the path 
-				// and if there's a piece, don't highlight square
 				if(scanPath(this.getIndex(), destinationSquare.getChessPiece().getIndex(), chessSquare))
 					return !destinationSquare.isPiece(); 
 			}

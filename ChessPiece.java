@@ -11,7 +11,6 @@ public abstract class ChessPiece {
 	private int index;  
 	private String filename = ""; 
 	private boolean isPiece = false; 
-	private Validation validator; 
 	private int lastVisited; 
 
 	public ChessPiece(int i) {
@@ -21,9 +20,13 @@ public abstract class ChessPiece {
 	/* 
 		Check if this square can moved to the passed destination square 
 			First check the piece of this square. The logic is different for each piece. 
-			- Pawn is done manually and simply deducting -16 from this square's index reveals the index of the only possible destination. -32 for two squares ahead (only on pawn's 1st move). 
-			- Sliding pieces can be done using by checking if a) the index difference is in the same rank and b) the index difference % 16 == 0
-			- Diagonal pieces work on the same principle as sliding b. Simply do modulo 15, -15, 17, -17, etc. 
+			- Pawn is done manually and simply deducting -16 from this square's index 
+			  reveals the index of the only possible destination. -32 for two squares ahead 
+			  (only on pawn's 1st move). 
+			- Sliding pieces can be done using by checking if a) the index difference is 
+			  in the same rank and b) the index difference % 16 == 0
+			- Diagonal pieces work on the same principle as sliding b. Simply do modulo 
+			  15, -15, 17, -17, etc. 
 			- King & Knight done painstakingly and manually. 
 
 			If any of the conditions are met in the associated case in the switch statement, 
@@ -32,10 +35,10 @@ public abstract class ChessPiece {
 	public abstract boolean canMoveTo(ChessSquare destinationSquare, ChessSquare[] chessSquare);
 
 	/* 
-		Determines if the path is diagonal, and in what direction from two given indexes. 
-		Then scans the path looking for pieces. If a piece is found, return false, else true.
+		Checks if the path from the piece to any end square index is clear of any pieces. If not, 
+		then return false so we know not to draw a selection on the end square
+			- Uses similar logic to canMoveTo() for each class that implements it
 	*/  
-
 	public abstract boolean scanPath(int start, int end, ChessSquare[] chessSquare);
 
 	/*  Getters  */ 

@@ -16,8 +16,6 @@ public class ChessBoard implements ActionListener {
 	private JPanel content; 
 	private ChessSquare selectedPiece = null;  
 
-	private Validation validator = new Validation(); 
-
 	public ChessBoard(String title, int w, int h) { 
 		frameWidth = w; 
 		frameHeight = h; 
@@ -54,7 +52,7 @@ public class ChessBoard implements ActionListener {
 		// clear all squares if there's a piece previously selected
 		if(this.selectedPiece != null) {
 			for(int i =0;i < 128;i++) {
-				if(!this.validator.hex88(i) && !chessSquare[i].isPiece())
+				if(!hex88(i) && !chessSquare[i].isPiece())
 					chessSquare[i].setIcon(new ImageIcon("Images/EmptySquare.jpg"));
 			}
 
@@ -67,18 +65,16 @@ public class ChessBoard implements ActionListener {
 		if(button.isPiece()) {
 			this.selectedPiece = button; // remember this selection for later
 			for(int i =0;i < 128;i++) {
-				if(!this.validator.hex88(i) && !chessSquare[i].isPiece() && this.selectedPiece.getChessPiece().canMoveTo(chessSquare[i], chessSquare)) {
+				if(!hex88(i) && !chessSquare[i].isPiece() && this.selectedPiece.getChessPiece().canMoveTo(chessSquare[i], chessSquare)) {
 					chessSquare[i].setIcon(new ImageIcon("Images/SelectedSquare.jpg"));
 				}
 			}
-			System.out.println("\n \n*** Moves Considered *** \n \n"); 
 		} 
 
 		// move selected piece (if it exists) if button pressed hasn't got a piece on it, and button can be moved to 
 		if(!button.isPiece() && this.selectedPiece != null && this.selectedPiece.getChessPiece().canMoveTo(button, chessSquare)) {
 			this.selectedPiece.moveTo(button); 
 			this.selectedPiece = null; 
-			System.out.println("\n \n*** Piece Moved *** \n \n"); 
 		} 
 	}
 
@@ -100,7 +96,7 @@ public class ChessBoard implements ActionListener {
 		for (int rank=0; rank < 8; file++) {
 			index = rank * 16 + file;
 			// only need to add square class to array if rank/file passes 0x88 test
-			if(!this.validator.hex88(index)) {				 
+			if(!hex88(index)) {				 
 				// set piece string if applicable on current rank/file
 				piece = (rank == 6) ? new Pawn(index) : new BlankSquare(index); 
 				if(rank == 7) {
@@ -138,6 +134,19 @@ public class ChessBoard implements ActionListener {
 	 			file = -1;
 	 		}
 		}
+	}
+
+	/* 
+		Takes an index and returns if it 
+		is on the 'legal' board or not 
+	*/
+	public boolean hex88(int index) {
+		// convert index to hex string then parse as an int then 
+		// bitwise AND this with the integer representation of 0x88
+		int test = (Integer.parseInt(Integer.toHexString(index), 16) 
+					& Integer.parseInt("88", 16));
+
+		return (test != 0) ? true : false; 
 	}
 
 }
