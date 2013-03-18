@@ -82,7 +82,6 @@ public class ChessBoard implements ActionListener {
 		is on the 'legal' board or not 
 	*/
 	public boolean hex88(int index) {
-
 		// convert index to hex string then parse as an int then 
 		// bitwise AND this with the integer representation of 0x88
 		int test = (Integer.parseInt(Integer.toHexString(index), 16) 
@@ -98,7 +97,7 @@ public class ChessBoard implements ActionListener {
 		- only store a chessSquare object if the index integer passes the 0x88 test
 		- switch statement used to determine if a certain rank/file holds a piece
 		- increments the rank when the end of a file reached
-	*/
+	*/ 
 	private void initHexChessSquares(int w, int h) {
 		String piece = ""; 
 		int file = 0; 

@@ -1,0 +1,62 @@
+ChessBoard 1 -------- * ChessSquare
+
+ChessSquare 1 ------- 0-1 ChessPiece
+
+ChessPiece (abstract)
+|
+| - Pawn
+| - Rook
+| - etc
+ 
+public class Driver{
+	
+	public static void main(){
+		ChessSquare[] ct = new ChessSquare[64];
+
+		ChessSquare firstClick;
+		ChessSquare secondClick;
+
+		firstClick.setPiece( secondClick.getPiece() );
+
+		ChessPiece cp = new Pawn();
+		cp.doSomething();
+		cp.doSomethingElse();
+	}
+}
+
+public class ChessSquare{
+	private ChessPiece cp;
+
+	public void setPiece( ChessPiece cp ){
+		this.cp = cp;
+
+	}
+
+}
+
+public asbtract class ChessPiece{
+	
+	public void doSomething(){
+
+
+	}
+
+	public abstract void doSomethingElse();
+}
+
+public class Pawn extends ChessPiece{
+	
+	public void doSomethingElse(){
+
+
+
+	}
+}
+
+
+implementing collision detect:
+	scan twice
+	----------------------------------------------------------------------
+	- on the first scan locate all possible moves
+	- scan again along these moves, in the piece's associated directions, 
+	  highlighting squares and when a piece is found, stop highlighting  
